@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MMF.CG.Model.MMD;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,7 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace VMDToBVH
+namespace VMDToBVH.Views
 {
     /// <summary>
     /// MainWindow.xaml の相互作用ロジック
@@ -23,6 +24,14 @@ namespace VMDToBVH
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+        protected override void OnInitialized(EventArgs e)
+        {
+            base.OnInitialized(e);
+
+            var model = MMDModelWithPhysics.OpenLoad(@"X:\mmd\models\a.pmx", renderControl.RenderContext);
+            renderControl.WorldSpace.AddResource(model);
         }
     }
 }
