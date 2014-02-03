@@ -1,9 +1,34 @@
-﻿<Window x:Class="VMDToBVH.Views.MainWindow"
+﻿<RibbonWindow
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mmf="http://mmflex.codeplex.com/"
-        Title="MainWindow" Height="350" Width="525">
-    <Grid>
-        <mmf:WPFRenderControl x:Name="renderControl" />
-    </Grid>
-</Window>
+        xmlns:views="clr-namespace:VMDToBVH.Views"
+        xmlns:ViewModels="clr-namespace:VMDToBVH.ViewModels" x:Class="VMDToBVH.Views.MainWindow"
+        Title="VMDToBVH" Height="350" Width="525">
+    <RibbonWindow.DataContext>
+        <ViewModels:MainViewModel/>
+    </RibbonWindow.DataContext>
+    <DockPanel>
+        <Ribbon DockPanel.Dock="Top" IsCollapsed="True"/>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <DockPanel>
+                <DockPanel DockPanel.Dock="Top">
+                    <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
+                        <TextBlock Text="{Binding CurrentFrame}" Width="30"/>
+                        <TextBlock Text="/"/>
+                        <TextBlock Text="{Binding FinalFrame}" Width="30"/>
+                        <Button Command="{Binding ConvertCommand}" Content="Convert"/>
+                    </StackPanel>
+                    <Slider Value="{Binding CurrentFrame}" Maximum="{Binding FinalFrame}"/>
+                </DockPanel>
+                <mmf:WPFRenderControl x:Name="renderControl" />
+            </DockPanel>
+            <GridSplitter Grid.Column="1" HorizontalAlignment="Left" Width="10"/>
+            <views:BVHView Grid.Column="1" Margin="10,0,0,0" BVH="{Binding BVH}"/>
+        </Grid>
+    </DockPanel>
+</RibbonWindow>
