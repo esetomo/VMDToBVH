@@ -120,9 +120,6 @@ namespace VMDToBVH.ViewModels
             }
             set
             {
-                if (motion == null || motion.CurrentFrame == value)
-                    return;
-
                 motion.CurrentFrame = value;
                 RaisePropertyChanged();
             }

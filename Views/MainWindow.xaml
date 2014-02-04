@@ -29,7 +29,7 @@
                 <mmf:WPFRenderControl x:Name="renderControl" />
             </DockPanel>
             <GridSplitter Grid.Column="1" HorizontalAlignment="Left" Width="10"/>
-            <views:BVHView Grid.Column="1" Margin="10,0,0,0" BVH="{Binding BVH}"/>
+            <views:BVHTreeView Grid.Column="1" Margin="10,0,0,0" DataContext="{Binding BVH}"/>
         </Grid>
     </DockPanel>
 </RibbonWindow>

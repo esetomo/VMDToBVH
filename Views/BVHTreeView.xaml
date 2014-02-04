@@ -1,0 +1,36 @@
+﻿<TreeView
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:Models="clr-namespace:VMDToBVH.Models" x:Class="VMDToBVH.Views.BVHTreeView" 
+             mc:Ignorable="d" 
+             ItemsSource="{Binding}"
+             FontFamily="MS Gothic"
+             VirtualizingStackPanel.IsVirtualizing="True"
+             VirtualizingStackPanel.VirtualizationMode="Recycling"    
+             d:DesignHeight="300" d:DesignWidth="300">
+    <TreeView.DataContext>
+        <Models:BVH/>
+    </TreeView.DataContext>
+    <TreeView.Resources>
+        <HierarchicalDataTemplate DataType="{x:Type Models:CompositeElement}" ItemsSource="{Binding Children}">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="{Binding ElementName}" />
+                <TextBlock Text=" "/>
+                <TextBlock Text="{Binding Name}" />
+                <TextBlock Text=" &lt;"/>
+                <TextBlock Text="{Binding Offset}"/>
+                <TextBlock Text="&gt; ["/>
+                <TextBlock Text="{Binding Channels}" />
+                <TextBlock Text="]"/>
+            </StackPanel>
+        </HierarchicalDataTemplate>
+        <HierarchicalDataTemplate DataType="{x:Type Models:JointFrameList}" ItemsSource="{Binding Frames}">
+            <TextBlock Text="Frames" />
+        </HierarchicalDataTemplate>
+        <HierarchicalDataTemplate DataType="{x:Type Models:FrameElementList}" ItemsSource="{Binding Frames}">
+            <TextBlock Text="Frames" />
+        </HierarchicalDataTemplate>
+    </TreeView.Resources>
+</TreeView>
