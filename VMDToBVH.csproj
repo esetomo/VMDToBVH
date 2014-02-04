@@ -64,13 +64,13 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="Views\BVHTreeView.xaml">
+    <Page Include="Views\BVHRenderView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\BVHView.xaml">
-      <Generator>MSBuild:Compile</Generator>
+    <Page Include="Views\BVHTreeView.xaml">
       <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -81,15 +81,15 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Models\BVH.cs" />
+    <Compile Include="ViewModels\BVHRenderViewModel.cs" />
     <Compile Include="ViewModels\DelegateCommand.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
+    <Compile Include="Views\BVHRenderView.xaml.cs">
+      <DependentUpon>BVHRenderView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\BVHTreeView.xaml.cs">
       <DependentUpon>BVHTreeView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\BVHView.xaml.cs">
-      <DependentUpon>BVHView.xaml</DependentUpon>
-      <SubType>Code</SubType>
     </Compile>
     <Compile Include="Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>

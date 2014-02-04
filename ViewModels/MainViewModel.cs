@@ -83,7 +83,7 @@ namespace VMDToBVH.ViewModels
             set
             {
                 model = value;
-                Motion = model.MotionManager.AddMotionFromFile(@"X:\mmd\motions\test.vmd", true);
+                Motion = model.MotionManager.AddMotionFromFile(@"X:\mmd\motions\iktest.vmd", true);
 
                 RaisePropertyChanged();
             }

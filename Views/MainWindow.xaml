@@ -26,7 +26,10 @@
                     </StackPanel>
                     <Slider Value="{Binding CurrentFrame}" Maximum="{Binding FinalFrame}"/>
                 </DockPanel>
-                <mmf:WPFRenderControl x:Name="renderControl" />
+                <Grid>
+                    <mmf:WPFRenderControl x:Name="renderControl" />
+                    <views:BVHRenderView BVH="{Binding BVH}" CurrentFrame="{Binding CurrentFrame}"/>
+                </Grid>
             </DockPanel>
             <GridSplitter Grid.Column="1" HorizontalAlignment="Left" Width="10"/>
             <views:BVHTreeView Grid.Column="1" Margin="10,0,0,0" DataContext="{Binding BVH}"/>
