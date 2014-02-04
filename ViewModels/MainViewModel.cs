@@ -22,7 +22,7 @@ namespace VMDToBVH.ViewModels
 
         private void ConvertCommandExecute(object param)
         {
-            BVH = new BVH(model, motion, renderContext);
+            BVH = new BVH(model, motion, (frame) => CurrentFrame = frame);
         }
 
         private RenderContext renderContext;
@@ -100,9 +100,9 @@ namespace VMDToBVH.ViewModels
             {
                 motion = value;
 
+                motion.FrameTicked += (_, e) => RaisePropertyChanged(() => CurrentFrame);
                 model.MotionManager.ApplyMotion(motion, 0);
                 motion.Stop();
-                // BVH = new BVH(model, motion, renderContext);
 
                 RaisePropertyChanged();
                 RaisePropertyChanged(() => FinalFrame);
@@ -120,6 +120,9 @@ namespace VMDToBVH.ViewModels
             }
             set
             {
+                if (motion == null || motion.CurrentFrame == value)
+                    return;
+
                 motion.CurrentFrame = value;
                 RaisePropertyChanged();
             }
@@ -145,6 +148,32 @@ namespace VMDToBVH.ViewModels
             set
             {
                 bvh = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        private bool isRunning = false;
+        public bool IsRunning
+        {
+            get
+            {
+                return isRunning;
+            }
+            set
+            {
+                if (isRunning == value)
+                    return;
+
+                isRunning = value;
+                if (isRunning)
+                {
+                    motion.Start(CurrentFrame, ActionAfterMotion.Replay);
+                }
+                else
+                {
+                    motion.Stop();
+                }
+
                 RaisePropertyChanged();
             }
         }

@@ -21,6 +21,7 @@
                         <TextBlock Text="{Binding CurrentFrame}" Width="30"/>
                         <TextBlock Text="/"/>
                         <TextBlock Text="{Binding FinalFrame}" Width="30"/>
+                        <ToggleButton Content="Run" IsChecked="{Binding IsRunning}" />
                         <Button Command="{Binding ConvertCommand}" Content="Convert"/>
                     </StackPanel>
                     <Slider Value="{Binding CurrentFrame}" Maximum="{Binding FinalFrame}"/>

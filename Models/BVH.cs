@@ -26,7 +26,7 @@ namespace VMDToBVH.Models
         {
         }
 
-        public BVH(MMDModel model, IMotionProvider motion, RenderContext context)
+        public BVH(MMDModel model, IMotionProvider motion, Action<int> progress = null)
         {
             var rootBone = model.Skinning.Bone.First((b) => b.Parent == null);
             m_root = new RootElement(this, rootBone);
@@ -38,6 +38,8 @@ namespace VMDToBVH.Models
                 motion.CurrentFrame = i;
                 model.Update();
                 m_frame_list.Add(new FrameElement(this, model, motion));
+                if (progress != null)
+                    progress(i);
                 System.Windows.Forms.Application.DoEvents();
             }
         }
