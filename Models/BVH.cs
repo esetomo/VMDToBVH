@@ -36,10 +36,9 @@ namespace VMDToBVH.Models
             for (int i = 0; i <= motion.FinalFrame; i++)
             {
                 motion.CurrentFrame = i;
-                // context.UpdateWorlds();
-                // motion.Tick();
                 model.Update();
                 m_frame_list.Add(new FrameElement(this, model, motion));
+                System.Windows.Forms.Application.DoEvents();
             }
         }
 
@@ -642,16 +641,30 @@ namespace VMDToBVH.Models
                     continue;
                 JointFrame a = m_map[bone.BoneName];
 
-                var r = bone.Rotation;
-                var q = new Quaternion(r.X, r.Y, -r.Z, -r.W);
-                var m = Matrix3D.Identity;
-                m.Rotate(q);
+                var m = Convert(bone.GlobalPose);
+                if (bone.Parent != null)
+                {
+                    var p = Convert(bone.Parent.GlobalPose);
+                    p.Invert();
+                    m *= p;
+                }
+                m.TranslatePrepend(Convert(bone.Position));
+                m.Translate(Convert(-bone.Position));
                 a.Matrix = m;
-
-                a.SetValue("Xposition", 0);
-                a.SetValue("Yposition", 0);
-                a.SetValue("Zposition", 0);
             }
+        }
+
+        private Matrix3D Convert(SlimDX.Matrix m)
+        {
+            return new Matrix3D(m.M11, m.M12, m.M13, m.M14,
+                                m.M21, m.M22, m.M23, m.M24,
+                                m.M31, m.M32, m.M33, m.M34,
+                                m.M41, m.M42, m.M43, m.M44);
+        }
+
+        private Vector3D Convert(SlimDX.Vector3 v)
+        {
+            return new Vector3D(v.X, v.Y, v.Z);
         }
 
         public void Write(TextWriter writer)
