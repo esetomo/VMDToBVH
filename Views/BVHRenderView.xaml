@@ -6,17 +6,17 @@
              xmlns:ViewModels="clr-namespace:VMDToBVH.ViewModels" x:Class="VMDToBVH.Views.BVHRenderView" 
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-    <Viewport3D x:Name="viewport">
+    <Viewport3D x:Name="viewport" SizeChanged="viewport_SizeChanged">
         <Viewport3D.DataContext>
             <ViewModels:BVHRenderViewModel/>
         </Viewport3D.DataContext>
         <Viewport3D.Camera>
-            <PerspectiveCamera 
-                    FarPlaneDistance="100"
-                    NearPlaneDistance="0"
+            <PerspectiveCamera x:Name="camera"
+                    FarPlaneDistance="2000"
+                    NearPlaneDistance="1"
                     LookDirection="0,0,-1"
                     UpDirection="0,1,0"
-                    Position="0,10,40"
+                    Position="0,10,25"
                     FieldOfView="45"/>
         </Viewport3D.Camera>
         <ModelVisual3D>

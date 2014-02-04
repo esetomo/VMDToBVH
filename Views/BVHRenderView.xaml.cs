@@ -74,5 +74,10 @@ namespace VMDToBVH.Views
                 this.SetValue(CurrentFrameProperty, value);
             }
         }
+
+        private void viewport_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            camera.FieldOfView = 45.0 * viewport.RenderSize.Width / viewport.RenderSize.Height;
+        }
     }
 }

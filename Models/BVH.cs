@@ -658,10 +658,11 @@ namespace VMDToBVH.Models
 
         private Matrix3D Convert(SlimDX.Matrix m)
         {
-            return new Matrix3D(m.M11, m.M12, m.M13, m.M14,
+            var r = new Matrix3D(m.M11, m.M12, m.M13, m.M14,
                                 m.M21, m.M22, m.M23, m.M24,
                                 m.M31, m.M32, m.M33, m.M34,
                                 m.M41, m.M42, m.M43, m.M44);
+            return r;
         }
 
         private Vector3D Convert(SlimDX.Vector3 v)

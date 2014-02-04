@@ -24,7 +24,7 @@
                 <TextBlock Text="&gt; ["/>
                 <TextBlock Text="{Binding Channels}" />
                 <TextBlock Text="]"/>
-            </StackPanel>
+            </StackPanel> 
         </HierarchicalDataTemplate>
         <HierarchicalDataTemplate DataType="{x:Type Models:JointFrameList}" ItemsSource="{Binding Frames}">
             <TextBlock Text="Frames" />
