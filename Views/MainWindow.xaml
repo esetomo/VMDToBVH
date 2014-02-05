@@ -4,27 +4,34 @@
         xmlns:mmf="http://mmflex.codeplex.com/"
         xmlns:views="clr-namespace:VMDToBVH.Views"
         xmlns:ViewModels="clr-namespace:VMDToBVH.ViewModels" x:Class="VMDToBVH.Views.MainWindow"
-        Title="VMDToBVH" Height="350" Width="525">
+        Title="VMDToBVH" Height="553" Width="804">
     <Window.DataContext>
         <ViewModels:MainViewModel/>
     </Window.DataContext>
     <DockPanel>
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="File">
+                <MenuItem Header="Open PMX" Command="{Binding OpenPmxCommand}"/>
+                <MenuItem Header="Open VMD" Command="{Binding OpenVmdCommand}"/>
+                <MenuItem Header="Convert" Command="{Binding ConvertCommand}"/>
+                <MenuItem Header="Save BVH" Command="{Binding SaveBvhCommand}"/>
+            </MenuItem>
+        </Menu>
+        <DockPanel DockPanel.Dock="Bottom">
+            <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
+                <TextBlock Text="{Binding CurrentFrame}" Width="30"/>
+                <TextBlock Text="/"/>
+                <TextBlock Text="{Binding FinalFrame}" Width="30"/>
+                <ToggleButton Content="Run" IsChecked="{Binding IsRunning}" />
+            </StackPanel>
+            <Slider Value="{Binding CurrentFrame}" Maximum="{Binding FinalFrame}"/>
+        </DockPanel>
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
             <DockPanel>
-                <DockPanel DockPanel.Dock="Top">
-                    <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
-                        <TextBlock Text="{Binding CurrentFrame}" Width="30"/>
-                        <TextBlock Text="/"/>
-                        <TextBlock Text="{Binding FinalFrame}" Width="30"/>
-                        <ToggleButton Content="Run" IsChecked="{Binding IsRunning}" />
-                        <Button Command="{Binding ConvertCommand}" Content="Convert"/>
-                    </StackPanel>
-                    <Slider Value="{Binding CurrentFrame}" Maximum="{Binding FinalFrame}"/>
-                </DockPanel>
                 <Grid>
                     <mmf:WPFRenderControl x:Name="renderControl" />
                     <views:BVHRenderView BVH="{Binding BVH}" CurrentFrame="{Binding CurrentFrame}"/>
