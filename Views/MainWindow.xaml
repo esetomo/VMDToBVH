@@ -1,15 +1,14 @@
-﻿<RibbonWindow
+﻿<Window
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mmf="http://mmflex.codeplex.com/"
         xmlns:views="clr-namespace:VMDToBVH.Views"
         xmlns:ViewModels="clr-namespace:VMDToBVH.ViewModels" x:Class="VMDToBVH.Views.MainWindow"
         Title="VMDToBVH" Height="350" Width="525">
-    <RibbonWindow.DataContext>
+    <Window.DataContext>
         <ViewModels:MainViewModel/>
-    </RibbonWindow.DataContext>
+    </Window.DataContext>
     <DockPanel>
-        <Ribbon DockPanel.Dock="Top" IsCollapsed="True"/>
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />
@@ -35,4 +34,4 @@
             <views:BVHTreeView Grid.Column="1" Margin="10,0,0,0" DataContext="{Binding BVH}"/>
         </Grid>
     </DockPanel>
-</RibbonWindow>
+</Window>
