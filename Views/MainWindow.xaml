@@ -4,10 +4,35 @@
         xmlns:mmf="http://mmflex.codeplex.com/"
         xmlns:views="clr-namespace:VMDToBVH.Views"
         xmlns:ViewModels="clr-namespace:VMDToBVH.ViewModels" x:Class="VMDToBVH.Views.MainWindow"
+        Background="{x:Static SystemColors.ControlBrush}"
         Title="VMDToBVH" Height="553" Width="804">
     <Window.DataContext>
         <ViewModels:MainViewModel/>
     </Window.DataContext>
+    <Window.Resources>
+        <Style x:Key="RunButton" TargetType="ToggleButton">
+            <Setter Property="Content">
+                <Setter.Value>
+                    <Polygon Points="8,4 0,0 0,8" Fill="{Binding RelativeSource={RelativeSource AncestorType=ToggleButton}, Path=Foreground}" />
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsChecked" Value="True">
+                    <Setter Property="Content">
+                        <Setter.Value>
+                            <Canvas Height="8" Width="6">
+                                <Rectangle Width="2" Height="8" Fill="Black"/>
+                                <Rectangle Canvas.Left="4"  Width="2" Height="8" Fill="Black"/>
+                            </Canvas>
+                        </Setter.Value>
+                    </Setter>                    
+                </Trigger>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Foreground" Value="{x:Static SystemColors.GrayTextBrush}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="File">
@@ -17,28 +42,27 @@
                 <MenuItem Header="Save BVH" Command="{Binding SaveBvhCommand}"/>
             </MenuItem>
         </Menu>
-        <DockPanel DockPanel.Dock="Bottom">
-            <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
-                <TextBlock Text="{Binding CurrentFrame}" Width="30"/>
+        <Separator DockPanel.Dock="Top"/>
+        <DockPanel DockPanel.Dock="Bottom" Margin="8">
+            <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" Margin="8,0,0,0">
+                <TextBlock Text="{Binding CurrentFrame}" Width="30" TextAlignment="Right"/>
                 <TextBlock Text="/"/>
-                <TextBlock Text="{Binding FinalFrame}" Width="30"/>
-                <ToggleButton Content="Run" IsChecked="{Binding IsRunning}" />
+                <TextBlock Text="{Binding FinalFrame}" Width="30" TextAlignment="Right" Margin="0,0,8,0"/>
+                <ToggleButton Width="20" IsChecked="{Binding IsRunning, Mode=OneWay}" Command="{Binding ToggleRunningCommand}" Style="{DynamicResource RunButton}"/>
             </StackPanel>
             <Slider Value="{Binding CurrentFrame}" Maximum="{Binding FinalFrame}"/>
         </DockPanel>
-        <Grid>
+        <Grid Margin="0,8,0,0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
-            <DockPanel>
-                <Grid>
-                    <mmf:WPFRenderControl x:Name="renderControl" />
-                    <views:BVHRenderView BVH="{Binding BVH}" CurrentFrame="{Binding CurrentFrame}"/>
-                </Grid>
-            </DockPanel>
+            <Grid Margin="8,0,0,0">
+                <mmf:WPFRenderControl x:Name="renderControl" />
+                <views:BVHRenderView BVH="{Binding BVH}" CurrentFrame="{Binding CurrentFrame}"/>
+            </Grid>
             <GridSplitter Grid.Column="1" HorizontalAlignment="Left" Width="10"/>
-            <views:BVHTreeView Grid.Column="1" Margin="10,0,0,0" DataContext="{Binding BVH}"/>
+            <views:BVHTreeView Grid.Column="1" Margin="10,0,8,0" DataContext="{Binding BVH}"/>
         </Grid>
     </DockPanel>
 </Window>

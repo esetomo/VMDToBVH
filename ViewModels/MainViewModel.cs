@@ -22,6 +22,7 @@ namespace VMDToBVH.ViewModels
             openVmdCommand = new DelegateCommand(OpenVmdCommandExecute, OpenVmdCommandCanExecute);
             convertCommand = new DelegateCommand(ConvertCommandExecute, ConvertCommandCanExecute);
             saveBvhCommand = new DelegateCommand(SaveBvhCommandExecute, SaveBvhCommandCanExecute);
+            toggleRunningCommand = new DelegateCommand(ToggleRunningCommandExecute, ToggleRunningCommandCanExecute);
         }
 
         private bool OpenPmxCommandCanExecute(object arg)
@@ -78,6 +79,16 @@ namespace VMDToBVH.ViewModels
                 using (var stream = sfd.OpenFile())
                     bvh.Save(stream);
             }
+        }
+
+        private bool ToggleRunningCommandCanExecute(object arg)
+        {
+            return motion != null;
+        }
+
+        private void ToggleRunningCommandExecute(object obj)
+        {
+            IsRunning = !isRunning;
         }
 
         private RenderContext renderContext;
@@ -265,6 +276,15 @@ namespace VMDToBVH.ViewModels
             get
             {
                 return saveBvhCommand;
+            }
+        }
+
+        private readonly ICommand toggleRunningCommand;
+        public ICommand ToggleRunningCommand
+        {
+            get
+            {
+                return toggleRunningCommand;
             }
         }
     }
