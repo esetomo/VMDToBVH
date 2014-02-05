@@ -281,6 +281,20 @@ namespace VMDToBVH.Models
 
     public abstract class Element
     {
+        protected Matrix3D Convert(SlimDX.Matrix m)
+        {
+            var r = new Matrix3D(m.M11, m.M12, m.M13, m.M14,
+                                m.M21, m.M22, m.M23, m.M24,
+                                m.M31, m.M32, m.M33, m.M34,
+                                m.M41, m.M42, m.M43, m.M44);
+            return r;
+        }
+
+        protected Vector3D Convert(SlimDX.Vector3 v)
+        {
+            var r = new Vector3D(v.X, v.Y, v.Z);
+            return r;
+        }
     }
 
     public abstract class CompositeElement : Element
@@ -493,17 +507,20 @@ namespace VMDToBVH.Models
 
         public OffsetElement(Bone bone)
         {
+            var pos = Convert(bone.Position);
+
             var parent = bone.Parent;
             if (parent != null)
             {
-                m_value = new Vector3D(bone.Position.X - parent.Position.X,
-                                       bone.Position.Y - parent.Position.Y,
-                                       -bone.Position.Z + parent.Position.Z);
+                var parentPos = Convert(parent.Position);
+                m_value = pos - parentPos;
             }
             else
             {
-                m_value = new Vector3D(bone.Position.X, bone.Position.Y, -bone.Position.Z);
+                m_value = pos;
             }
+
+            m_value.Z = -m_value.Z;
         }
 
         public void Write(TextWriter writer, int indent)
@@ -644,6 +661,7 @@ namespace VMDToBVH.Models
                 JointFrame a = m_map[bone.BoneName];
 
                 var m = Convert(bone.GlobalPose);
+
                 if (bone.Parent != null)
                 {
                     var p = Convert(bone.Parent.GlobalPose);
@@ -652,22 +670,13 @@ namespace VMDToBVH.Models
                 }
                 m.TranslatePrepend(Convert(bone.Position));
                 m.Translate(Convert(-bone.Position));
+
                 a.Matrix = m;
+
+                a.SetValue("Xrotation", -a.GetValue("Xrotation"));
+                a.SetValue("Yrotation", -a.GetValue("Yrotation"));
+                a.SetValue("Zposition", -a.GetValue("Zposition"));
             }
-        }
-
-        private Matrix3D Convert(SlimDX.Matrix m)
-        {
-            var r = new Matrix3D(m.M11, m.M12, m.M13, m.M14,
-                                m.M21, m.M22, m.M23, m.M24,
-                                m.M31, m.M32, m.M33, m.M34,
-                                m.M41, m.M42, m.M43, m.M44);
-            return r;
-        }
-
-        private Vector3D Convert(SlimDX.Vector3 v)
-        {
-            return new Vector3D(v.X, v.Y, v.Z);
         }
 
         public void Write(TextWriter writer)
