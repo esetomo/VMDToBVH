@@ -33,6 +33,7 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
+        <BooleanToVisibilityConverter x:Key="booleanToVisibilityConverter"/>
     </Window.Resources>
     <DockPanel>
         <ToolBar DockPanel.Dock="Top">
@@ -50,32 +51,34 @@
                     <TextBlock Text="{Binding CurrentFrame}" Width="30" TextAlignment="Right"/>
                     <TextBlock Text="/"/>
                     <TextBlock Text="{Binding FinalFrame}" Width="30" TextAlignment="Right" Margin="0,0,8,0"/>
-                    <ToggleButton Width="20" IsChecked="{Binding IsRunning, Mode=OneWay}" Command="{Binding ToggleRunningCommand}" Style="{DynamicResource RunButton}"/>
+                    <Grid Width="20">
+                        <ToggleButton Width="20" IsChecked="{Binding IsRunning, Mode=OneWay}" Command="{Binding ToggleRunningCommand}" Style="{DynamicResource RunButton}"/>
+                        <Button Command="{Binding CancelCommand}" Visibility="{Binding IsConverting, Converter={StaticResource booleanToVisibilityConverter}}" ToolTip="Cancel">
+                            <Rectangle Fill="Red" Width="8" Height="8"/>
+                        </Button>
+                    </Grid>
                 </StackPanel>
             </StatusBarItem>
             <StatusBarItem HorizontalContentAlignment="Stretch">
-                <Slider Value="{Binding CurrentFrame}" Maximum="{Binding FinalFrame}"/>
+                <Grid>
+                    <Slider Value="{Binding CurrentFrame}" Maximum="{Binding FinalFrame}"/>
+                    <ProgressBar Value="{Binding CurrentFrame}" Maximum="{Binding FinalFrame}" Visibility="{Binding IsConverting, Converter={StaticResource booleanToVisibilityConverter}}"/>
+                </Grid>
             </StatusBarItem>
         </StatusBar>
         <Border BorderBrush="DarkGray" BorderThickness="0,2,0,2">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition />
+                    <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
                 <Grid MinWidth="1" MinHeight="1">
                     <mmf:WPFRenderControl x:Name="renderControl" />
                     <views:BVHRenderView BVH="{Binding BVH}" CurrentFrame="{Binding CurrentFrame}"/>
                 </Grid>
-                <GridSplitter Grid.Column="1" HorizontalAlignment="Left" Width="8"/>
-                <TabControl Grid.Column="1" Margin="8,0,0,0">
-                    <TabItem Header="Armature">
-                        <TextBlock FontSize="24" Text="ここに変換設定を追加したい" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                    </TabItem>
-                    <TabItem Header="BVH Tree">
-                        <views:BVHTreeView DataContext="{Binding BVH}"/>
-                    </TabItem>
-                </TabControl>
+                <GridSplitter Grid.Column="1" HorizontalAlignment="Center" Width="8"/>
+                <views:BVHTreeView Grid.Column="2" DataContext="{Binding BVH}"/>
             </Grid>
         </Border>
     </DockPanel>

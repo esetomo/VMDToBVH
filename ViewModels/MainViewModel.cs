@@ -23,11 +23,12 @@ namespace VMDToBVH.ViewModels
             convertCommand = new DelegateCommand(ConvertCommandExecute, ConvertCommandCanExecute);
             saveBvhCommand = new DelegateCommand(SaveBvhCommandExecute, SaveBvhCommandCanExecute);
             toggleRunningCommand = new DelegateCommand(ToggleRunningCommandExecute, ToggleRunningCommandCanExecute);
+            cancelCommand = new DelegateCommand(CancelCommandExecute, CancelCommandCanExecute);
         }
 
         private bool OpenPmxCommandCanExecute(object arg)
         {
-            return renderContext != null;
+            return renderContext != null && !isConverting;
         }
 
         private void OpenPmxCommandExecute(object obj)
@@ -42,7 +43,7 @@ namespace VMDToBVH.ViewModels
 
         private bool OpenVmdCommandCanExecute(object arg)
         {
-            return model != null;
+            return model != null && !isConverting;
         }
 
         private void OpenVmdCommandExecute(object obj)
@@ -57,17 +58,21 @@ namespace VMDToBVH.ViewModels
 
         private bool ConvertCommandCanExecute(object arg)
         {
-            return motion != null;
+            return motion != null && !isConverting;
         }
 
         private void ConvertCommandExecute(object param)
         {
-            BVH = new BVH(model, motion, (frame) => CurrentFrame = frame);
+            IsConverting = true;
+            var bvh = new BVH(model, motion, (frame) => { CurrentFrame = frame; return IsConverting; });
+            if (IsConverting)
+                BVH = bvh;
+            IsConverting = false;
         }
 
         private bool SaveBvhCommandCanExecute(object arg)
         {
-            return bvh != null;
+            return bvh != null && !isConverting;
         }
 
         private void SaveBvhCommandExecute(object obj)
@@ -83,12 +88,22 @@ namespace VMDToBVH.ViewModels
 
         private bool ToggleRunningCommandCanExecute(object arg)
         {
-            return motion != null;
+            return motion != null && !isConverting;
         }
 
         private void ToggleRunningCommandExecute(object obj)
         {
             IsRunning = !isRunning;
+        }
+
+        private bool CancelCommandCanExecute(object arg)
+        {
+            return isConverting;
+        }
+
+        private void CancelCommandExecute(object obj)
+        {
+            IsConverting = false;
         }
 
         private RenderContext renderContext;
@@ -243,6 +258,20 @@ namespace VMDToBVH.ViewModels
             }
         }
 
+        private bool isConverting = false;
+        public bool IsConverting
+        {
+            get
+            {
+                return isConverting;
+            }
+            set
+            {
+                isConverting = value;
+                RaisePropertyChanged();
+            }
+        }
+
         private readonly ICommand convertCommand;
         public ICommand ConvertCommand
         {
@@ -285,6 +314,15 @@ namespace VMDToBVH.ViewModels
             get
             {
                 return toggleRunningCommand;
+            }
+        }
+
+        private readonly ICommand cancelCommand;
+        public ICommand CancelCommand
+        {
+            get
+            {
+                return cancelCommand;
             }
         }
     }
