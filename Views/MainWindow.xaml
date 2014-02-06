@@ -5,6 +5,7 @@
         xmlns:views="clr-namespace:VMDToBVH.Views"
         xmlns:ViewModels="clr-namespace:VMDToBVH.ViewModels" x:Class="VMDToBVH.Views.MainWindow"
         Background="{x:Static SystemColors.ControlBrush}"
+        ResizeMode="CanResizeWithGrip"
         Title="VMDToBVH" Height="553" Width="804">
     <Window.DataContext>
         <ViewModels:MainViewModel/>
@@ -34,35 +35,48 @@
         </Style>
     </Window.Resources>
     <DockPanel>
-        <Menu DockPanel.Dock="Top">
-            <MenuItem Header="File">
-                <MenuItem Header="Open PMX" Command="{Binding OpenPmxCommand}"/>
-                <MenuItem Header="Open VMD" Command="{Binding OpenVmdCommand}"/>
-                <MenuItem Header="Convert" Command="{Binding ConvertCommand}"/>
-                <MenuItem Header="Save BVH" Command="{Binding SaveBvhCommand}"/>
-            </MenuItem>
-        </Menu>
-        <Separator DockPanel.Dock="Top"/>
-        <DockPanel DockPanel.Dock="Bottom" Margin="8">
-            <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" Margin="8,0,0,0">
-                <TextBlock Text="{Binding CurrentFrame}" Width="30" TextAlignment="Right"/>
-                <TextBlock Text="/"/>
-                <TextBlock Text="{Binding FinalFrame}" Width="30" TextAlignment="Right" Margin="0,0,8,0"/>
-                <ToggleButton Width="20" IsChecked="{Binding IsRunning, Mode=OneWay}" Command="{Binding ToggleRunningCommand}" Style="{DynamicResource RunButton}"/>
-            </StackPanel>
-            <Slider Value="{Binding CurrentFrame}" Maximum="{Binding FinalFrame}"/>
-        </DockPanel>
-        <Grid Margin="0,8,0,0">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition />
-                <ColumnDefinition />
-            </Grid.ColumnDefinitions>
-            <Grid Margin="8,0,0,0">
-                <mmf:WPFRenderControl x:Name="renderControl" />
-                <views:BVHRenderView BVH="{Binding BVH}" CurrentFrame="{Binding CurrentFrame}"/>
+        <ToolBar DockPanel.Dock="Top">
+            <Button Content="Open PMX" Command="{Binding OpenPmxCommand}"/>
+            <Separator/>
+            <Button Content="Open VMD" Command="{Binding OpenVmdCommand}"/>
+            <Separator/>
+            <Button Content="Convert" Command="{Binding ConvertCommand}"/>
+            <Separator/>
+            <Button Content="Save BVH" Command="{Binding SaveBvhCommand}"/>
+        </ToolBar>
+        <StatusBar DockPanel.Dock="Bottom">
+            <StatusBarItem DockPanel.Dock="Right" Margin="8,0,30,0">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="{Binding CurrentFrame}" Width="30" TextAlignment="Right"/>
+                    <TextBlock Text="/"/>
+                    <TextBlock Text="{Binding FinalFrame}" Width="30" TextAlignment="Right" Margin="0,0,8,0"/>
+                    <ToggleButton Width="20" IsChecked="{Binding IsRunning, Mode=OneWay}" Command="{Binding ToggleRunningCommand}" Style="{DynamicResource RunButton}"/>
+                </StackPanel>
+            </StatusBarItem>
+            <StatusBarItem HorizontalContentAlignment="Stretch">
+                <Slider Value="{Binding CurrentFrame}" Maximum="{Binding FinalFrame}"/>
+            </StatusBarItem>
+        </StatusBar>
+        <Border BorderBrush="DarkGray" BorderThickness="0,2,0,2">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Grid MinWidth="1" MinHeight="1">
+                    <mmf:WPFRenderControl x:Name="renderControl" />
+                    <views:BVHRenderView BVH="{Binding BVH}" CurrentFrame="{Binding CurrentFrame}"/>
+                </Grid>
+                <GridSplitter Grid.Column="1" HorizontalAlignment="Left" Width="8"/>
+                <TabControl Grid.Column="1" Margin="8,0,0,0">
+                    <TabItem Header="Armature">
+                        <TextBlock FontSize="24" Text="ここに変換設定を追加したい" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </TabItem>
+                    <TabItem Header="BVH Tree">
+                        <views:BVHTreeView DataContext="{Binding BVH}"/>
+                    </TabItem>
+                </TabControl>
             </Grid>
-            <GridSplitter Grid.Column="1" HorizontalAlignment="Left" Width="10"/>
-            <views:BVHTreeView Grid.Column="1" Margin="10,0,8,0" DataContext="{Binding BVH}"/>
-        </Grid>
+        </Border>
     </DockPanel>
 </Window>
