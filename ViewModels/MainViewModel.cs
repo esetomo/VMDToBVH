@@ -20,7 +20,7 @@ namespace VMDToBVH.ViewModels
         {
             openPmxCommand = new DelegateCommand(OpenPmxCommandExecute, OpenPmxCommandCanExecute);
             openVmdCommand = new DelegateCommand(OpenVmdCommandExecute, OpenVmdCommandCanExecute);
-            convertCommand = new DelegateCommand(ConvertCommandExecute, ConvertCommandCanExecute);
+            calcBvhCommand = new DelegateCommand(CalcBvhCommandExecute, CalcBvhCommandCanExecute);
             saveBvhCommand = new DelegateCommand(SaveBvhCommandExecute, SaveBvhCommandCanExecute);
             toggleRunningCommand = new DelegateCommand(ToggleRunningCommandExecute, ToggleRunningCommandCanExecute);
             cancelCommand = new DelegateCommand(CancelCommandExecute, CancelCommandCanExecute);
@@ -56,12 +56,12 @@ namespace VMDToBVH.ViewModels
             }
         }
 
-        private bool ConvertCommandCanExecute(object arg)
+        private bool CalcBvhCommandCanExecute(object arg)
         {
             return motion != null && !isConverting;
         }
 
-        private void ConvertCommandExecute(object param)
+        private void CalcBvhCommandExecute(object param)
         {
             IsConverting = true;
             var bvh = new BVH(model, motion, (frame) => { CurrentFrame = frame; return IsConverting; });
@@ -272,12 +272,12 @@ namespace VMDToBVH.ViewModels
             }
         }
 
-        private readonly ICommand convertCommand;
-        public ICommand ConvertCommand
+        private readonly ICommand calcBvhCommand;
+        public ICommand CalcBvhCommand
         {
             get
             {
-                return convertCommand;
+                return calcBvhCommand;
             }
         }
 

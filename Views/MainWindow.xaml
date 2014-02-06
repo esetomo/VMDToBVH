@@ -41,7 +41,7 @@
             <Separator/>
             <Button Content="Open VMD" Command="{Binding OpenVmdCommand}"/>
             <Separator/>
-            <Button Content="Convert" Command="{Binding ConvertCommand}"/>
+            <Button Content="Calc BVH" Command="{Binding CalcBvhCommand}"/>
             <Separator/>
             <Button Content="Save BVH" Command="{Binding SaveBvhCommand}"/>
         </ToolBar>
