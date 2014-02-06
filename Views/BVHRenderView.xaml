@@ -24,6 +24,17 @@
                 <AmbientLight Color="#ffffff"/>
             </ModelVisual3D.Content>
         </ModelVisual3D>
-        <ModelVisual3D x:Name="modelRoot"/>
+        <ModelVisual3D x:Name="modelRoot">
+            <ModelVisual3D.Transform>
+                <Transform3DGroup>
+                    <ScaleTransform3D ScaleX="{Binding Scale}"
+                                      ScaleY="{Binding Scale}"
+                                      ScaleZ="{Binding Scale}"/>
+                    <TranslateTransform3D OffsetX="{Binding Offset.X}"
+                                          OffsetY="{Binding Offset.Y}"
+                                          OffsetZ="{Binding Offset.Z}"/>
+                </Transform3DGroup>
+            </ModelVisual3D.Transform>
+        </ModelVisual3D>
     </Viewport3D>
 </UserControl>

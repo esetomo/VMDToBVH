@@ -10,6 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using System.Windows.Media.Media3D;
 using VMDToBVH.Models;
 
 namespace VMDToBVH.ViewModels
@@ -24,6 +25,7 @@ namespace VMDToBVH.ViewModels
             saveBvhCommand = new DelegateCommand(SaveBvhCommandExecute, SaveBvhCommandCanExecute);
             toggleRunningCommand = new DelegateCommand(ToggleRunningCommandExecute, ToggleRunningCommandCanExecute);
             cancelCommand = new DelegateCommand(CancelCommandExecute, CancelCommandCanExecute);
+            convertToSlCommand = new DelegateCommand(ConvertToSlCommandExecute, ConvertToSlCommandCanExecute);
         }
 
         private bool OpenPmxCommandCanExecute(object arg)
@@ -66,8 +68,25 @@ namespace VMDToBVH.ViewModels
             IsConverting = true;
             var bvh = new BVH(model, motion, (frame) => { CurrentFrame = frame; return IsConverting; });
             if (IsConverting)
+            {
+                Scale = 1.0;
+                Offset = new Vector3D();
                 BVH = bvh;
+            }
             IsConverting = false;
+        }
+
+        private bool ConvertToSlCommandCanExecute(object arg)
+        {
+            return bvh != null;
+        }
+
+        private void ConvertToSlCommandExecute(object obj)
+        {
+            var converter = new BVHConverter(bvh);
+            Scale = 0.20;
+            Offset = new Vector3D(0, 6.5, 0);
+            BVH = converter.Convert();
         }
 
         private bool SaveBvhCommandCanExecute(object arg)
@@ -232,6 +251,34 @@ namespace VMDToBVH.ViewModels
             }
         }
 
+        private double scale = 1.0;
+        public double Scale
+        {
+            get
+            {
+                return scale;
+            }
+            set
+            {
+                scale = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        private Vector3D offset = new Vector3D();
+        public Vector3D Offset
+        {
+            get
+            {
+                return offset;
+            }
+            set
+            {
+                offset = value;
+                RaisePropertyChanged();
+            }
+        }
+
         private bool isRunning = false;
         public bool IsRunning
         {
@@ -323,6 +370,15 @@ namespace VMDToBVH.ViewModels
             get
             {
                 return cancelCommand;
+            }
+        }
+
+        private readonly ICommand convertToSlCommand;
+        public ICommand ConvertToSlCommand
+        {
+            get
+            {
+                return convertToSlCommand;
             }
         }
     }

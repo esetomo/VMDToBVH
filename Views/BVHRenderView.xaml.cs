@@ -53,7 +53,7 @@ namespace VMDToBVH.Views
             }
         }
 
-        private static readonly DependencyProperty CurrentFrameProperty =
+        public static readonly DependencyProperty CurrentFrameProperty =
             DependencyProperty.Register("CurrentFrame", typeof(int), typeof(BVHRenderView), new PropertyMetadata(OnCurrentFrameChanged));
 
         private static void OnCurrentFrameChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -72,6 +72,50 @@ namespace VMDToBVH.Views
             set
             {
                 this.SetValue(CurrentFrameProperty, value);
+            }
+        }
+
+        public static readonly DependencyProperty ScaleProperty =
+            DependencyProperty.Register("Scale", typeof(double), typeof(BVHRenderView), new PropertyMetadata(OnScaleChanged));
+
+        private static void OnScaleChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var self = (BVHRenderView)d;
+            var vm = (BVHRenderViewModel)self.viewport.DataContext;
+            vm.Scale = (double)e.NewValue;
+        }
+
+        public double Scale
+        {
+            get
+            {
+                return (double)this.GetValue(ScaleProperty);
+            }
+            set
+            {
+                this.SetValue(ScaleProperty, value);
+            }
+        }
+
+        public static readonly DependencyProperty OffsetProperty =
+            DependencyProperty.Register("Offset", typeof(Vector3D), typeof(BVHRenderView), new PropertyMetadata(OnOffsetChanged));
+
+        private static void OnOffsetChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var self = (BVHRenderView)d;
+            var vm = (BVHRenderViewModel)self.viewport.DataContext;
+            vm.Offset = (Vector3D)e.NewValue;            
+        }
+
+        public Vector3D Offset
+        {
+            get
+            {
+                return (Vector3D)this.GetValue(OffsetProperty);
+            }
+            set
+            {
+                this.SetValue(OffsetProperty, value);
             }
         }
 

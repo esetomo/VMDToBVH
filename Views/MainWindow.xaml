@@ -43,6 +43,8 @@
             <Separator/>
             <Button Content="Calc BVH" Command="{Binding CalcBvhCommand}"/>
             <Separator/>
+            <Button Content="Convert To SL" Command="{Binding ConvertToSlCommand}"/>
+            <Separator/>
             <Button Content="Save BVH" Command="{Binding SaveBvhCommand}"/>
         </ToolBar>
         <StatusBar DockPanel.Dock="Bottom">
@@ -75,7 +77,7 @@
                 </Grid.ColumnDefinitions>
                 <Grid MinWidth="1" MinHeight="1">
                     <mmf:WPFRenderControl x:Name="renderControl" />
-                    <views:BVHRenderView BVH="{Binding BVH}" CurrentFrame="{Binding CurrentFrame}"/>
+                    <views:BVHRenderView BVH="{Binding BVH}" CurrentFrame="{Binding CurrentFrame}" Scale="{Binding Scale}" Offset="{Binding Offset}"/>
                 </Grid>
                 <GridSplitter Grid.Column="1" HorizontalAlignment="Center" Width="8"/>
                 <views:BVHTreeView Grid.Column="2" DataContext="{Binding BVH}"/>
