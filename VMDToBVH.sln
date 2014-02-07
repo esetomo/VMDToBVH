@@ -16,6 +16,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{2F5068
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CreateArchive", "CreateArchive\CreateArchive.csproj", "{809CA5C0-D1A6-4D36-8349-F8F56D339873}"
+	ProjectSection(ProjectDependencies) = postProject
+		{A6269B6A-C274-4B43-B7F4-B6810559F5DA} = {A6269B6A-C274-4B43-B7F4-B6810559F5DA}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -56,6 +61,16 @@ Global
 		{3DF05446-6065-4EBB-9BCC-075A0D91DDA0}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{3DF05446-6065-4EBB-9BCC-075A0D91DDA0}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{3DF05446-6065-4EBB-9BCC-075A0D91DDA0}.Release|x86.ActiveCfg = Release|Any CPU
+		{809CA5C0-D1A6-4D36-8349-F8F56D339873}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{809CA5C0-D1A6-4D36-8349-F8F56D339873}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{809CA5C0-D1A6-4D36-8349-F8F56D339873}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{809CA5C0-D1A6-4D36-8349-F8F56D339873}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{809CA5C0-D1A6-4D36-8349-F8F56D339873}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{809CA5C0-D1A6-4D36-8349-F8F56D339873}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{809CA5C0-D1A6-4D36-8349-F8F56D339873}.Release|Any CPU.Build.0 = Release|Any CPU
+		{809CA5C0-D1A6-4D36-8349-F8F56D339873}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{809CA5C0-D1A6-4D36-8349-F8F56D339873}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{809CA5C0-D1A6-4D36-8349-F8F56D339873}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
