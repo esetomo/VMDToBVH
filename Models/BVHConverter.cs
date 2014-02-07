@@ -9,11 +9,57 @@ namespace VMDToBVH.Models
 {
     public class BVHConverter
     {
+        // SL初期ポーズルート(hip)ボーンY座標 (インワールドではZが上下だが、BVHではYが上下)
+        public const double InitialRootY = 43.5285;
+
         private readonly BVH m_src;
 
         public BVHConverter(BVH src)
         {
             m_src = src;
+        }
+
+        public double Scale
+        {
+            get
+            {
+                // 変換元(MMD) 変換先(SL) いずれも原点は足元なので、MMD側でhipに当たるY座標を出せば拡大率は求まる。
+                var center = m_src.JointList.FirstOrDefault((j) => j.Name == "センター");
+                var lowerBody = m_src.JointList.FirstOrDefault((j) => j.Name == "下半身");
+                var leg = m_src.JointList.FirstOrDefault((j) => j.Name == "左足");
+
+                var y = 0.0;
+
+                if (center != null)
+                    y += center.Offset.Value.Y;
+
+                if (lowerBody != null)
+                    y += lowerBody.Offset.Value.Y;
+
+                if (leg != null)
+                    y += leg.Offset.Value.Y * 0.8;
+
+                return InitialRootY / y;
+            }
+        }
+
+        public double Offset
+        {
+            get
+            {
+                var lowerBody = m_src.JointList.FirstOrDefault((j) => j.Name == "下半身");
+                var leg = m_src.JointList.FirstOrDefault((j) => j.Name == "左足");
+
+                var y = 0.0;
+
+                if (lowerBody != null)
+                    y += lowerBody.Offset.Value.Y;
+
+                if (leg != null)
+                    y += leg.Offset.Value.Y * 0.8;
+
+                return y * Scale;
+            }
         }
 
         public BVH Convert()
@@ -25,7 +71,7 @@ namespace VMDToBVH.Models
             dest.FrameList.Clear();
 
             FrameElement firstFrame = new FrameElement(dest);
-            firstFrame.GetJointFrame("hip").SetValue("Yposition", 43.5285);
+            firstFrame.GetJointFrame("hip").SetValue("Yposition", InitialRootY);
             dest.FrameList.Add(firstFrame);
 
             foreach (FrameElement frame in m_src.FrameList)
@@ -56,7 +102,7 @@ namespace VMDToBVH.Models
             return destFrame;
         }
 
-        private static void ConvertJointFrame(JointFrame jfDest, string jointName, FrameElement srcFrame)
+        private void ConvertJointFrame(JointFrame jfDest, string jointName, FrameElement srcFrame)
         {
             Matrix3D matrix;
 
@@ -66,10 +112,11 @@ namespace VMDToBVH.Models
                     matrix = jfDest.Matrix;
                     JointFrame jfRoot = srcFrame.GetJointFrame("センター");
                     Matrix3D rootMatrix = jfRoot.Matrix;
-                    rootMatrix.OffsetX *= 4;
-                    rootMatrix.OffsetY *= 4;
-                    rootMatrix.OffsetZ *= 4;
-                    rootMatrix.OffsetY += 12;
+                    double zoom = 4;
+                    rootMatrix.OffsetX *= Scale;
+                    rootMatrix.OffsetY *= Scale;
+                    rootMatrix.OffsetZ *= Scale;
+                    rootMatrix.OffsetY += Offset;
                     matrix.Append(rootMatrix);
                     jfDest.Matrix = matrix;
                     break;

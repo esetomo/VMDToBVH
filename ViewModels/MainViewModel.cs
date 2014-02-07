@@ -74,6 +74,7 @@ namespace VMDToBVH.ViewModels
                 BVH = bvh;
             }
             IsConverting = false;
+            CurrentFrame = 0;
         }
 
         private bool ConvertToSlCommandCanExecute(object arg)
@@ -84,8 +85,8 @@ namespace VMDToBVH.ViewModels
         private void ConvertToSlCommandExecute(object obj)
         {
             var converter = new BVHConverter(bvh);
-            Scale = 0.20;
-            Offset = new Vector3D(0, 6.5, 0);
+            Scale = 1.0 / converter.Scale;
+            Offset = new Vector3D();
             BVH = converter.Convert();
         }
 
