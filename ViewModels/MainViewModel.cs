@@ -100,8 +100,13 @@ namespace VMDToBVH.ViewModels
             sfd.Filter = "BVHファイル(*.bvh)|*.bvh";
             if (sfd.ShowDialog() == true)
             {
-                using (var stream = sfd.OpenFile())
-                    bvh.Save(stream);
+                foreach (CompositeElement joint in bvh.JointList)
+                {
+                    JointFrame jf = bvh.FrameList[0].GetJointFrame(joint.Name);
+                    jf.SetValue("Xrotation", isEnableAllJoints ? 0.1 : 0.0);
+                }
+
+                bvh.Save(sfd.FileName, splitIntervalSec);
             }
         }
 
@@ -325,6 +330,34 @@ namespace VMDToBVH.ViewModels
             set
             {
                 isConverting = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        private bool isEnableAllJoints;
+        public bool IsEnableAllJoints
+        {
+            get
+            {
+                return isEnableAllJoints;
+            }
+            set
+            {
+                isEnableAllJoints = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        private int splitIntervalSec = 30;
+        public int SplitIntervalSec
+        {
+            get
+            {
+                return splitIntervalSec;
+            }
+            set
+            {
+                splitIntervalSec = value;
                 RaisePropertyChanged();
             }
         }

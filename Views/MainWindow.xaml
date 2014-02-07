@@ -36,17 +36,25 @@
         <BooleanToVisibilityConverter x:Key="booleanToVisibilityConverter"/>
     </Window.Resources>
     <DockPanel>
-        <ToolBar DockPanel.Dock="Top">
+        <WrapPanel DockPanel.Dock="Top" Orientation="Horizontal">
+            <WrapPanel.Resources>
+                <Style TargetType="Button">
+                    <Setter Property="Margin" Value="8,4"/>                    
+                </Style>
+            </WrapPanel.Resources>
             <Button Content="Open PMX" Command="{Binding OpenPmxCommand}"/>
-            <Separator/>
             <Button Content="Open VMD" Command="{Binding OpenVmdCommand}"/>
-            <Separator/>
             <Button Content="Calc BVH" Command="{Binding CalcBvhCommand}"/>
-            <Separator/>
             <Button Content="Convert To SL" Command="{Binding ConvertToSlCommand}"/>
-            <Separator/>
+            <CheckBox Content="Use All Joints" Margin="8,4" IsChecked="{Binding IsEnableAllJoints}"/>
+            <StackPanel Orientation="Horizontal" Margin="8,4">
+                <TextBlock Text="Split by"/>
+                <Slider Width="120" Maximum="60" Minimum="8" Interval="1" Value="{Binding SplitIntervalSec}" SmallChange="1"/>
+                <TextBlock Width="15" Text="{Binding SplitIntervalSec}" TextAlignment="Right"/>
+                <TextBlock Text="sec"/>
+            </StackPanel>
             <Button Content="Save BVH" Command="{Binding SaveBvhCommand}"/>
-        </ToolBar>
+        </WrapPanel>
         <StatusBar DockPanel.Dock="Bottom">
             <StatusBarItem DockPanel.Dock="Right" Margin="8,0,30,0">
                 <StackPanel Orientation="Horizontal">
