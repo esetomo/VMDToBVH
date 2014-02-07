@@ -201,7 +201,17 @@ namespace VMDToBVH.ViewModels
 
                 if (motion != null)
                 {
-                    motion.FrameTicked += (_, e) => RaisePropertyChanged(() => CurrentFrame);
+                    motion.FrameTicked += (_, e) => {
+                        if (isRunning && CurrentFrame >= FinalFrame)
+                        {
+                            IsRunning = false;
+                            CurrentFrame = 0;
+                        }
+                        else
+                        {
+                            RaisePropertyChanged(() => CurrentFrame);
+                        }
+                    };
                     model.MotionManager.ApplyMotion(motion, 0);
                     motion.Stop();
                 }
@@ -294,7 +304,7 @@ namespace VMDToBVH.ViewModels
                 isRunning = value;
                 if (isRunning)
                 {
-                    motion.Start(CurrentFrame, ActionAfterMotion.Replay);
+                    motion.Start(CurrentFrame, ActionAfterMotion.Nothing);
                 }
                 else
                 {
