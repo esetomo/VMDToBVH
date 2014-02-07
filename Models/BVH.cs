@@ -689,7 +689,8 @@ namespace VMDToBVH.Models
                     m *= p;
                 }
                 m.TranslatePrepend(Convert(bone.Position));
-                m.Translate(Convert(-bone.Position));
+                if(bone.Parent != null)
+                    m.Translate(Convert(-bone.Parent.Position));
 
                 a.Matrix = m;
 

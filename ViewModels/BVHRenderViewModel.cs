@@ -83,13 +83,10 @@ namespace VMDToBVH.ViewModels
             ContainerUIElement3D marker = CreateMarker(1, 0.05);
             joint.Visual = marker;
 
-            Transform3DGroup transforms = new Transform3DGroup();
-            marker.Transform = transforms;
+            Matrix3D m = Matrix3D.Identity;
+            m.Translate(joint.Offset.Value);
 
-            transforms.Children.Add(new MatrixTransform3D());
-
-            Vector3D offset = joint.Offset.Value;
-            transforms.Children.Add(new TranslateTransform3D(offset));
+            marker.Transform = new MatrixTransform3D(m);
 
             foreach (CompositeElement child in joint.JointList)
             {
@@ -196,9 +193,17 @@ namespace VMDToBVH.ViewModels
             foreach (CompositeElement joint in BVH.JointList)
             {
                 JointFrame jf = frame.GetJointFrame(joint.Name);
-                Transform3DGroup tg = (Transform3DGroup)joint.Visual.Transform;
-                MatrixTransform3D transform = (MatrixTransform3D)tg.Children[0];
-                transform.Matrix = jf.Matrix;
+                var m = jf.Matrix;
+
+                if (joint.Channels.ChannelList.Count() == 3)
+                {
+                    m.OffsetX = joint.Offset.Value.X;
+                    m.OffsetY = joint.Offset.Value.Y;
+                    m.OffsetZ = joint.Offset.Value.Z;
+                }
+
+                var transform = (MatrixTransform3D)joint.Visual.Transform;
+                transform.Matrix = m;
             }
         }
     }
