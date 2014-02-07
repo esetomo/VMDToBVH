@@ -134,7 +134,7 @@ namespace VMDToBVH.Models
                 m_root.Write(writer, 0);
                 writer.WriteLine("MOTION");
                 writer.WriteLine("Frames: {0}", m_frames.Value);
-                writer.WriteLine("Frame Time: {0}", m_frame_time.Value);
+                writer.WriteLine("Frame Time: {0:0.000000}", m_frame_time.Value);
                 foreach (FrameElement frame in m_frame_list)
                 {
                     frame.Write(writer);
@@ -528,7 +528,7 @@ namespace VMDToBVH.Models
 
         public void Write(TextWriter writer, int indent)
         {
-            writer.WriteLine("{0}OFFSET {1} {2} {3}", new string(' ', indent * 2), m_value.X, m_value.Y, m_value.Z);
+            writer.WriteLine("{0}OFFSET {1:0.000000} {2:0.000000} {3:0.000000}", new string(' ', indent * 2), m_value.X, m_value.Y, m_value.Z);
         }
 
         public override string ToString()
@@ -689,7 +689,7 @@ namespace VMDToBVH.Models
                 JointFrame a = m_map[joint.Name];
                 foreach (string channel in joint.Channels.ChannelList)
                 {
-                    writer.Write("{0} ", a.GetValue(channel));
+                    writer.Write("{0:0.000000} ", a.GetValue(channel));
                 }
             }
             writer.WriteLine();
