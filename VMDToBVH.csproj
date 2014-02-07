@@ -129,6 +129,10 @@
       <Project>{a04f1a52-5efd-402a-a207-b239ea15df55}</Project>
       <Name>MikuMikuFlex</Name>
     </ProjectReference>
+    <ProjectReference Include="X:\mmd\libs\mmflex\MikuMikuFlex\MMDFileParser\MMDFilePaser.csproj">
+      <Project>{3df05446-6065-4ebb-9bcc-075a0d91dda0}</Project>
+      <Name>MMDFilePaser</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

@@ -28,8 +28,15 @@ namespace VMDToBVH.Models
 
         public BVH(MMDModel model, IMotionProvider motion, Func<int, bool> progress = null)
         {
+            var movedBones = new HashSet<string>();
+            foreach (var frame in motion.Motion.BoneFrames.boneFrameList)
+            {
+                if (frame.BonePosition != SlimDX.Vector3.Zero)
+                    movedBones.Add(frame.BoneName);
+            }
+
             var rootBone = model.Skinning.Bone.First((b) => b.Parent == null);
-            m_root = new RootElement(this, rootBone);
+            m_root = new RootElement(this, rootBone, movedBones);
             m_frame_time = new FrameTimeElement(1.0 / 30.0);
             m_frames = new FramesElement(motion.FinalFrame + 1);
 
@@ -443,15 +450,15 @@ namespace VMDToBVH.Models
         {
         }
 
-        public JointElement(BVH bvh, Bone bone)
+        public JointElement(BVH bvh, Bone bone, HashSet<string> movedBones)
             : base(bvh, bone.BoneName)
         {
             Add(new OffsetElement(bone));
-            Add(new ChannelsElement(bone));
+            Add(new ChannelsElement(movedBones.Contains(bone.BoneName)));
 
             foreach(var child in bone.Children)
             {
-                Add(new JointElement(bvh, child));
+                Add(new JointElement(bvh, child, movedBones));
             }
         }
 
@@ -468,15 +475,15 @@ namespace VMDToBVH.Models
         {
         }
 
-        public RootElement(BVH bvh, Bone bone)
+        public RootElement(BVH bvh, Bone bone, HashSet<string> movedBones)
             : base(bvh, bone.BoneName)
         {
             Add(new OffsetElement(bone));
-            Add(new ChannelsElement(bone));
+            Add(new ChannelsElement(movedBones.Contains(bone.BoneName)));
 
             foreach(var child in bone.Children)
             {
-                Add(new JointElement(bvh, child));
+                Add(new JointElement(bvh, child, movedBones));
             }
         }
 
@@ -556,13 +563,23 @@ namespace VMDToBVH.Models
             m_channel_list = args.Skip(2).ToArray();
         }
 
-        public ChannelsElement(Bone bone)
+        public ChannelsElement(bool isMoved)
         {
-            m_count = 6;
-            m_channel_list = new[] { 
-                "Xposition", "Yposition", "Zposition",
-                "Zrotation", "Xrotation", "Yrotation" 
-            };
+            if (isMoved)
+            {
+                m_count = 6;
+                m_channel_list = new[] { 
+                    "Xposition", "Yposition", "Zposition",
+                    "Zrotation", "Xrotation", "Yrotation" 
+                };
+            }
+            else
+            {
+                m_count = 3;
+                m_channel_list = new[] { 
+                    "Zrotation", "Xrotation", "Yrotation" 
+                };
+            }
         }
 
         public string[] ChannelList
@@ -727,7 +744,9 @@ namespace VMDToBVH.Models
 
         public double GetValue(string name)
         {
-            return m_map[name];
+            double d;
+            m_map.TryGetValue(name, out d);
+            return d;
         }
 
         public void SetValue(string name, double value)
