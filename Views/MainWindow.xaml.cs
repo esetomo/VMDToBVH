@@ -1,4 +1,5 @@
-﻿using MMF.CG.Model.MMD;
+﻿using MMF.CG.Model.Grid;
+using MMF.CG.Model.MMD;
 using SlimDX;
 using System;
 using System.Collections.Generic;
@@ -36,6 +37,10 @@ namespace VMDToBVH.Views
             vm.RenderContext = renderControl.RenderContext;
             vm.WorldSpace = renderControl.WorldSpace;
             vm.TextureContext = renderControl.TextureContext;
+
+            BasicGrid grid = new BasicGrid();
+            grid.Load(renderControl.RenderContext);
+            renderControl.WorldSpace.AddResource(grid);
 
             renderControl.Background = new Color4(1, 0, 0, 0);
         }
