@@ -171,8 +171,6 @@ namespace VMDToBVH.ViewModels
             set
             {
                 textureContext = value;
-                textureContext.MatrixManager.ViewMatrixManager.CameraPosition = new Vector3(0, 10, -25);
-                textureContext.MatrixManager.ViewMatrixManager.CameraLookAt = new Vector3(0, 10, 0);
                 RaisePropertyChanged();
             }
         }

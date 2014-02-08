@@ -29,6 +29,43 @@ namespace VMDToBVH.Views
 
             var vm = (BVHRenderViewModel)viewport.DataContext;
             vm.ModelRoot = modelRoot;
+
+            var tg = new Transform3DGroup();
+
+            cameraOffset = new TranslateTransform3D();
+            tg.Children.Add(cameraOffset);
+            
+            var t = new RotateTransform3D();
+            t.CenterY = 10;
+            cameraRotationX = new AxisAngleRotation3D(new Vector3D(1, 0, 0), 0);
+            t.Rotation = cameraRotationX;
+            tg.Children.Add(t);
+
+            t = new RotateTransform3D();
+            t.CenterY = 10;
+            cameraRotationY = new AxisAngleRotation3D(new Vector3D(0, 1, 0), 0);
+            t.Rotation = cameraRotationY;
+            tg.Children.Add(t);
+
+            camera.Transform = tg;                
+        }
+
+        private TranslateTransform3D cameraOffset;
+        
+        private AxisAngleRotation3D cameraRotationX;
+        public double CameraAngleX {
+            set
+            {
+                cameraRotationX.Angle = value;
+            }
+        }
+        
+        private AxisAngleRotation3D cameraRotationY;
+        public double CameraAngleY {
+            set
+            {
+                cameraRotationY.Angle = value;
+            }
         }
 
         public static readonly DependencyProperty BVHProperty =
