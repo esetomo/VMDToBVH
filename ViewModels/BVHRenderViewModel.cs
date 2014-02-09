@@ -62,20 +62,6 @@ namespace VMDToBVH.ViewModels
             }
         }
 
-        private Vector3D offset = new Vector3D();
-        public Vector3D Offset
-        {
-            get
-            {
-                return offset;
-            }
-            set
-            {
-                offset = value;
-                RaisePropertyChanged();
-            }
-        }
-
         public ModelVisual3D ModelRoot { get; set; }
 
         private Visual3D CreateMarkerTree(CompositeElement joint)

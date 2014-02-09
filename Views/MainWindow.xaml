@@ -83,9 +83,9 @@
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
-                <Grid MinWidth="1" MinHeight="1" MouseLeftButtonDown="Grid_MouseLeftButtonDown" MouseMove="Grid_MouseMove">
+                <Grid MinWidth="1" MinHeight="1">
                     <mmf:WPFRenderControl x:Name="renderControl" />
-                    <views:BVHRenderView x:Name="bvhRenderView" BVH="{Binding BVH}" CurrentFrame="{Binding CurrentFrame}" Scale="{Binding Scale}" Offset="{Binding Offset}"/>
+                    <views:BVHRenderView x:Name="bvhRenderView" BVH="{Binding BVH}" CurrentFrame="{Binding CurrentFrame}" Scale="{Binding Scale}"/>
                 </Grid>
                 <GridSplitter Grid.Column="1" HorizontalAlignment="Center" Width="8"/>
                 <views:BVHTreeView Grid.Column="2" DataContext="{Binding BVH}"/>

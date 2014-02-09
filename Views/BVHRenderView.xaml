@@ -30,9 +30,6 @@
                     <ScaleTransform3D ScaleX="{Binding Scale}"
                                       ScaleY="{Binding Scale}"
                                       ScaleZ="{Binding Scale}"/>
-                    <TranslateTransform3D OffsetX="{Binding Offset.X}"
-                                          OffsetY="{Binding Offset.Y}"
-                                          OffsetZ="{Binding Offset.Z}"/>
                 </Transform3DGroup>
             </ModelVisual3D.Transform>
         </ModelVisual3D>

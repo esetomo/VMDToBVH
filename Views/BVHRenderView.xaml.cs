@@ -134,28 +134,6 @@ namespace VMDToBVH.Views
             }
         }
 
-        public static readonly DependencyProperty OffsetProperty =
-            DependencyProperty.Register("Offset", typeof(Vector3D), typeof(BVHRenderView), new PropertyMetadata(OnOffsetChanged));
-
-        private static void OnOffsetChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            var self = (BVHRenderView)d;
-            var vm = (BVHRenderViewModel)self.viewport.DataContext;
-            vm.Offset = (Vector3D)e.NewValue;            
-        }
-
-        public Vector3D Offset
-        {
-            get
-            {
-                return (Vector3D)this.GetValue(OffsetProperty);
-            }
-            set
-            {
-                this.SetValue(OffsetProperty, value);
-            }
-        }
-
         private void viewport_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             camera.FieldOfView = 45.0 * viewport.RenderSize.Width / viewport.RenderSize.Height;

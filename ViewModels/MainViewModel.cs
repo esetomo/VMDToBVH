@@ -70,7 +70,6 @@ namespace VMDToBVH.ViewModels
             if (IsConverting)
             {
                 Scale = 1.0;
-                Offset = new Vector3D();
                 BVH = bvh;
             }
             IsConverting = false;
@@ -86,7 +85,6 @@ namespace VMDToBVH.ViewModels
         {
             var converter = new BVHConverter(bvh);
             Scale = 1.0 / converter.Scale;
-            Offset = new Vector3D();
             BVH = converter.Convert();
         }
 
@@ -275,20 +273,6 @@ namespace VMDToBVH.ViewModels
             set
             {
                 scale = value;
-                RaisePropertyChanged();
-            }
-        }
-
-        private Vector3D offset = new Vector3D();
-        public Vector3D Offset
-        {
-            get
-            {
-                return offset;
-            }
-            set
-            {
-                offset = value;
                 RaisePropertyChanged();
             }
         }
