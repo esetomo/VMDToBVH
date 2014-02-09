@@ -36,6 +36,8 @@ namespace VMDToBVH.Models
             }
 
             var rootBone = model.Skinning.Bone.First((b) => b.Parent == null);
+            movedBones.Add(rootBone.BoneName);
+
             m_root = new RootElement(this, rootBone, movedBones);
             m_frame_time = new FrameTimeElement(1.0 / 30.0);
             m_frames = new FramesElement(motion.FinalFrame + 1);
