@@ -54,7 +54,7 @@ namespace VMDToBVH.ViewModels
             ofd.Filter = "VMDモーションファイル(*.vmd)|*.vmd";
             if (ofd.ShowDialog() == true)
             {
-                Motion = model.MotionManager.AddMotionFromFile(ofd.FileName, true);
+                Motion = (MMDMotion)model.MotionManager.AddMotionFromFile(ofd.FileName, true);
             }
         }
 
@@ -190,8 +190,8 @@ namespace VMDToBVH.ViewModels
             }
         }
 
-        private IMotionProvider motion;
-        public IMotionProvider Motion
+        private MMDMotion motion;
+        public MMDMotion Motion
         {
             get
             {

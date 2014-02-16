@@ -26,7 +26,7 @@ namespace VMDToBVH.Models
         {
         }
 
-        public BVH(MMDModel model, IMotionProvider motion, Func<int, bool> progress = null)
+        public BVH(MMDModel model, MMDMotion motion, Func<int, bool> progress = null)
         {
             var movedBones = new HashSet<string>();
             foreach (var frame in motion.Motion.BoneFrames.boneFrameList)
