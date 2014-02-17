@@ -1,8 +1,8 @@
 ﻿using Microsoft.Win32;
-using MMF.CG;
-using MMF.CG.DeviceManager;
-using MMF.CG.Model.MMD;
-using MMF.CG.Motion;
+using MMF;
+using MMF.DeviceManager;
+using MMF.Model.PMX;
+using MMF.Motion;
 using SlimDX;
 using System;
 using System.Collections.Generic;
@@ -39,7 +39,7 @@ namespace VMDToBVH.ViewModels
             ofd.Filter = "PMXモデルファイル(*.pmx)|*.pmx";
             if (ofd.ShowDialog() == true)
             {
-                Model = MMDModel.OpenLoad(ofd.FileName, renderContext);
+                Model = PMXModel.OpenLoad(ofd.FileName, renderContext);
             }
         }
 
@@ -173,8 +173,8 @@ namespace VMDToBVH.ViewModels
             }
         }
 
-        private MMDModel model;
-        public MMDModel Model
+        private PMXModel model;
+        public PMXModel Model
         {
             get
             {

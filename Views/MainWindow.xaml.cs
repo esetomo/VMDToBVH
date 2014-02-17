@@ -1,5 +1,5 @@
-﻿using MMF.CG.Model.Grid;
-using MMF.CG.Model.MMD;
+﻿using MMF.Grid;
+using MMF.Matricies.Camera.CameraMotion;
 using SlimDX;
 using System;
 using System.Collections.Generic;
@@ -16,7 +16,6 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using VMDToBVH.ViewModels;
-using MMF.CG.Camera.CameraMotion;
 
 namespace VMDToBVH.Views
 {

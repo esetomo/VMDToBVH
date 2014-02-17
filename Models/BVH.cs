@@ -7,10 +7,9 @@ using System.Diagnostics;
 using System.Windows.Media.Media3D;
 using System.Collections;
 using System.Collections.ObjectModel;
-using MMF.CG.Model.MMD;
-using MMF.CG.Motion;
-using MMF.CG.Skinning;
-using MMF.CG;
+using MMF.Model.PMX;
+using MMF.Motion;
+using MMF.Bone;
 
 namespace VMDToBVH.Models
 {
@@ -26,7 +25,7 @@ namespace VMDToBVH.Models
         {
         }
 
-        public BVH(MMDModel model, MMDMotion motion, Func<int, bool> progress = null)
+        public BVH(PMXModel model, MMDMotion motion, Func<int, bool> progress = null)
         {
             var movedBones = new HashSet<string>();
             foreach (var frame in motion.Motion.BoneFrames.boneFrameList)
@@ -452,7 +451,7 @@ namespace VMDToBVH.Models
         {
         }
 
-        public JointElement(BVH bvh, Bone bone, HashSet<string> movedBones)
+        public JointElement(BVH bvh, PMXBone bone, HashSet<string> movedBones)
             : base(bvh, bone.BoneName)
         {
             Add(new OffsetElement(bone));
@@ -477,7 +476,7 @@ namespace VMDToBVH.Models
         {
         }
 
-        public RootElement(BVH bvh, Bone bone, HashSet<string> movedBones)
+        public RootElement(BVH bvh, PMXBone bone, HashSet<string> movedBones)
             : base(bvh, bone.BoneName)
         {
             Add(new OffsetElement(bone));
@@ -517,7 +516,7 @@ namespace VMDToBVH.Models
             m_value = new Vector3D(double.Parse(x), double.Parse(y), double.Parse(z));
         }
 
-        public OffsetElement(Bone bone)
+        public OffsetElement(PMXBone bone)
         {
             var pos = Convert(bone.Position);
 
@@ -673,10 +672,10 @@ namespace VMDToBVH.Models
                 throw new InvalidDataException();
         }
 
-        public FrameElement(BVH bvh, MMDModel model, IMotionProvider motion)
+        public FrameElement(BVH bvh, PMXModel model, IMotionProvider motion)
             : this(bvh)
         {
-            foreach (Bone bone in model.Skinning.Bone)
+            foreach (var bone in model.Skinning.Bone)
             {
                 if (!m_map.ContainsKey(bone.BoneName))
                     continue;
