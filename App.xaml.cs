@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
+using VMDToBVH.Views;
 
 namespace VMDToBVH
 {
@@ -32,7 +33,9 @@ namespace VMDToBVH
 
         void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
-            MessageBox.Show(e.ExceptionObject.ToString());
+            var dialog = new ErrorDialog();
+            dialog.Message = e.ExceptionObject.ToString();
+            dialog.ShowDialog();
         }
     }
 }
