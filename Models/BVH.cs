@@ -10,6 +10,7 @@ using System.Collections.ObjectModel;
 using MMF.Model.PMX;
 using MMF.Motion;
 using MMF.Bone;
+using MMDFileParser.MotionParser;
 
 namespace VMDToBVH.Models
 {
@@ -25,10 +26,10 @@ namespace VMDToBVH.Models
         {
         }
 
-        public BVH(PMXModel model, MMDMotion motion, Func<int, bool> progress = null)
+        public BVH(PMXModel model, MotionData motionData, MMDMotion motion, Func<int, bool> progress = null)
         {
             var movedBones = new HashSet<string>();
-            foreach (var frame in motion.Motion.BoneFrames.boneFrameList)
+            foreach (var frame in motionData.boneFrameList.boneFrameDatas)
             {
                 if (frame.BonePosition != SlimDX.Vector3.Zero)
                     movedBones.Add(frame.BoneName);

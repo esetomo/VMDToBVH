@@ -1,4 +1,5 @@
 ﻿using Microsoft.Win32;
+using MMDFileParser.MotionParser;
 using MMF;
 using MMF.DeviceManager;
 using MMF.Model.PMX;
@@ -6,6 +7,7 @@ using MMF.Motion;
 using SlimDX;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -54,7 +56,11 @@ namespace VMDToBVH.ViewModels
             ofd.Filter = "VMDモーションファイル(*.vmd)|*.vmd";
             if (ofd.ShowDialog() == true)
             {
-                Motion = (MMDMotion)model.MotionManager.AddMotionFromFile(ofd.FileName, true);
+                MMDMotion motion = (MMDMotion)model.MotionManager.AddMotionFromFile(ofd.FileName, true);
+                MotionData motionData;
+                using (var fs = new FileStream(ofd.FileName, FileMode.Open))
+                    motionData = MotionData.getMotion(fs);
+                SetMotion(motion, motionData);
             }
         }
 
@@ -66,7 +72,8 @@ namespace VMDToBVH.ViewModels
         private void CalcBvhCommandExecute(object param)
         {
             IsConverting = true;
-            var bvh = new BVH(model, motion, (frame) => { CurrentFrame = frame; return IsConverting; });
+
+            var bvh = new BVH(model, motionData, motion, (frame) => { CurrentFrame = frame; return IsConverting; });
             if (IsConverting)
             {
                 Scale = 1.0;
@@ -184,46 +191,50 @@ namespace VMDToBVH.ViewModels
             {
                 model = value;
                 worldSpace.AddResource(model);
-                Motion = null;
+                SetMotion(null, null);
 
                 RaisePropertyChanged();
             }
         }
 
         private MMDMotion motion;
+        private MotionData motionData;
         public MMDMotion Motion
         {
             get
             {
                 return motion;
             }
-            set
-            {
-                motion = value;
-
-                if (motion != null)
-                {
-                    motion.FrameTicked += (_, e) => {
-                        if (isRunning && CurrentFrame >= FinalFrame)
-                        {
-                            IsRunning = false;
-                            CurrentFrame = 0;
-                        }
-                        else
-                        {
-                            RaisePropertyChanged(() => CurrentFrame);
-                        }
-                    };
-                    model.MotionManager.ApplyMotion(motion, 0);
-                    motion.Stop();
-                }
-
-                RaisePropertyChanged();
-                RaisePropertyChanged(() => FinalFrame);
-                RaisePropertyChanged(() => CurrentFrame);
-            }
         }
 
+        public void SetMotion(MMDMotion value, MotionData motionData)
+        {
+            motion = value;
+            this.motionData = motionData;
+
+            if (motion != null)
+            {
+                motion.FrameTicked += (_, e) =>
+                {
+                    if (isRunning && CurrentFrame >= FinalFrame)
+                    {
+                        IsRunning = false;
+                        CurrentFrame = 0;
+                    }
+                    else
+                    {
+                        RaisePropertyChanged(() => CurrentFrame);
+                    }
+                };
+                model.MotionManager.ApplyMotion(motion, 0);
+                motion.Stop();
+            }
+
+            RaisePropertyChanged();
+            RaisePropertyChanged(() => FinalFrame);
+            RaisePropertyChanged(() => CurrentFrame);
+        }        
+        
         public float CurrentFrame
         {
             get

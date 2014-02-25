@@ -112,7 +112,6 @@ namespace VMDToBVH.Models
                     matrix = jfDest.Matrix;
                     JointFrame jfRoot = srcFrame.GetJointFrame("センター");
                     Matrix3D rootMatrix = jfRoot.Matrix;
-                    double zoom = 4;
                     rootMatrix.OffsetX *= Scale;
                     rootMatrix.OffsetY *= Scale;
                     rootMatrix.OffsetZ *= Scale;
